@@ -566,7 +566,7 @@ public class FabricWorld extends AbstractWorld {
 
     @Override
     public int getMaxY() {
-        return getWorld().getHeight() - 1;
+        return getWorld().method_31598() - 1;
     }
 
     @Override
@@ -634,7 +634,7 @@ public class FabricWorld extends AbstractWorld {
             FabricAdapter.toBlockPos(region.getMinimumPoint()),
             FabricAdapter.toBlockPos(region.getMaximumPoint().add(BlockVector3.ONE))
         );
-        List<net.minecraft.entity.Entity> nmsEntities = world.getEntitiesByType(
+        List<net.minecraft.entity.Entity> nmsEntities = world.getOtherEntities(
             null,
             box,
             e -> region.contains(FabricAdapter.adapt(e.getBlockPos()))

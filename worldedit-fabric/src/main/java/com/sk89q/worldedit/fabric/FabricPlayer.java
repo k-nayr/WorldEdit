@@ -52,7 +52,6 @@ import net.minecraft.network.packet.s2c.play.CustomPayloadS2CPacket;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.MutableText;
-import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Hand;
 import net.minecraft.util.Identifier;
@@ -118,7 +117,7 @@ public class FabricPlayer extends AbstractPlayerActor {
 
     @Override
     public void giveItem(BaseItemStack itemStack) {
-        this.player.inventory.insertStack(FabricAdapter.adapt(itemStack));
+        this.player.method_31548().insertStack(FabricAdapter.adapt(itemStack));
     }
 
     @Override
@@ -166,7 +165,7 @@ public class FabricPlayer extends AbstractPlayerActor {
 
     @Override
     public void print(Component component) {
-        this.player.sendMessage(Text.Serializer.fromJson(GsonComponentSerializer.INSTANCE.serialize(WorldEditText.format(component, getLocale()))), false);
+        this.player.sendMessage(net.minecraft.text.Text.Serializer.fromJson(GsonComponentSerializer.INSTANCE.serialize(WorldEditText.format(component, getLocale()))), false);
     }
 
     private void sendColorized(String msg, Formatting formatting) {
@@ -206,13 +205,13 @@ public class FabricPlayer extends AbstractPlayerActor {
 
     @Override
     public boolean isAllowedToFly() {
-        return player.abilities.allowFlying;
+        return player.method_31549().allowFlying;
     }
 
     @Override
     public void setFlying(boolean flying) {
-        if (player.abilities.flying != flying) {
-            player.abilities.flying = flying;
+        if (player.method_31549().flying != flying) {
+            player.method_31549().flying = flying;
             player.sendAbilitiesUpdate();
         }
     }
