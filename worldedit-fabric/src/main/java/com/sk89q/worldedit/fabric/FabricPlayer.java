@@ -117,7 +117,7 @@ public class FabricPlayer extends AbstractPlayerActor {
 
     @Override
     public void giveItem(BaseItemStack itemStack) {
-        this.player.method_31548().insertStack(FabricAdapter.adapt(itemStack));
+        this.player.getInventory().insertStack(FabricAdapter.adapt(itemStack));
     }
 
     @Override
@@ -205,13 +205,13 @@ public class FabricPlayer extends AbstractPlayerActor {
 
     @Override
     public boolean isAllowedToFly() {
-        return player.method_31549().allowFlying;
+        return player.getAbilities().allowFlying;
     }
 
     @Override
     public void setFlying(boolean flying) {
-        if (player.method_31549().flying != flying) {
-            player.method_31549().flying = flying;
+        if (player.getAbilities().flying != flying) {
+            player.getAbilities().flying = flying;
             player.sendAbilitiesUpdate();
         }
     }
