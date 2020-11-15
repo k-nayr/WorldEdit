@@ -280,7 +280,7 @@ public class SpongeAdapter {
     public static BlockState adapt(org.spongepowered.api.block.BlockState blockState) {
         checkNotNull(blockState);
 
-        return BlockStateIdAccess.getBlockStateById(PaletteTypes.GLOBAL_BLOCKS.get().create().getOrAssign(blockState));
+        return BlockStateIdAccess.getBlockStateById(PaletteTypes.GLOBAL_BLOCK_PALETTE.get().create().get(blockState).getAsInt());
     }
 
     private static final Int2ObjectMap<org.spongepowered.api.block.BlockState> spongeBlockStateCache = new Int2ObjectOpenHashMap<>();
@@ -299,7 +299,7 @@ public class SpongeAdapter {
             cacheKey = block.hashCode();
         }
 
-        return spongeBlockStateCache.computeIfAbsent(cacheKey, input -> PaletteTypes.GLOBAL_BLOCKS.get().create().get(input).orElse(null));
+        return spongeBlockStateCache.computeIfAbsent(cacheKey, input -> PaletteTypes.GLOBAL_BLOCK_PALETTE.get().create().get(input).orElse(null));
     }
 
 }

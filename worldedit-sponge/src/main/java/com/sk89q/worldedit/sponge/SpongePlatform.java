@@ -47,6 +47,7 @@ import org.spongepowered.api.entity.EntityType;
 import org.spongepowered.api.entity.living.player.server.ServerPlayer;
 import org.spongepowered.api.event.lifecycle.RegisterCommandEvent;
 import org.spongepowered.api.scheduler.Task;
+import org.spongepowered.api.util.Ticks;
 import org.spongepowered.api.world.server.ServerWorld;
 
 import java.util.ArrayList;
@@ -100,8 +101,8 @@ class SpongePlatform extends AbstractPlatform implements MultiUserPlatform {
     public int schedule(long delay, long period, Runnable task) {
         try {
             Task.builder()
-                .delayTicks(delay)
-                .intervalTicks(period)
+                .delay(Ticks.of(delay))
+                .interval(Ticks.of(period))
                 .execute(task)
                 .plugin(mod.getContainer())
                 .build();

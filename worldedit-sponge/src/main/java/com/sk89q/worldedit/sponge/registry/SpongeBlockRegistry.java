@@ -63,6 +63,6 @@ public class SpongeBlockRegistry extends BundledBlockRegistry {
             Object val = spongeProp.parseValue(state.getState(property).toString().toLowerCase(Locale.ROOT)).get();
             workingState = (org.spongepowered.api.block.BlockState) workingState.withStateProperty(spongeProp, (Comparable) val).get();
         }
-        return OptionalInt.of(PaletteTypes.GLOBAL_BLOCKS.get().create().getOrAssign(workingState));
+        return PaletteTypes.GLOBAL_BLOCK_PALETTE.get().create().get(workingState);
     }
 }

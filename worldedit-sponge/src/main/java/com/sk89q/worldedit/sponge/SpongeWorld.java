@@ -50,6 +50,7 @@ import org.spongepowered.api.data.Keys;
 import org.spongepowered.api.entity.EntityType;
 import org.spongepowered.api.entity.EntityTypes;
 import org.spongepowered.api.util.AABB;
+import org.spongepowered.api.util.Ticks;
 import org.spongepowered.api.world.BlockChangeFlag;
 import org.spongepowered.api.world.dimension.DimensionTypes;
 import org.spongepowered.api.world.server.ServerWorld;
@@ -59,7 +60,6 @@ import org.spongepowered.math.vector.Vector3i;
 
 import java.lang.ref.WeakReference;
 import java.nio.file.Path;
-import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -339,8 +339,7 @@ public class SpongeWorld extends AbstractWorld {
 
     @Override
     public long getRemainingWeatherDuration() {
-        // TODO Ticks?
-        return getWorld().getRemainingWeatherDuration().getSeconds() * 20;
+        return getWorld().getRemainingWeatherDuration().getTicks();
     }
 
     @Override
@@ -350,8 +349,7 @@ public class SpongeWorld extends AbstractWorld {
 
     @Override
     public void setWeather(WeatherType weatherType, long duration) {
-        // TODO Ticks?
-        getWorld().setWeather(Sponge.getRegistry().getCatalogRegistry().get(Weather.class, ResourceKey.resolve(weatherType.getId())).get(), Duration.ofSeconds(duration * 20));
+        getWorld().setWeather(Sponge.getRegistry().getCatalogRegistry().get(Weather.class, ResourceKey.resolve(weatherType.getId())).get(), Ticks.of(duration));
     }
 
     @Override

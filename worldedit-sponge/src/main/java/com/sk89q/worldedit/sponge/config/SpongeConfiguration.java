@@ -21,10 +21,9 @@ package com.sk89q.worldedit.sponge.config;
 
 import com.google.inject.Inject;
 import com.sk89q.worldedit.sponge.SpongeWorldEdit;
-import ninja.leaping.configurate.commented.CommentedConfigurationNode;
-import ninja.leaping.configurate.loader.ConfigurationLoader;
-import org.slf4j.Logger;
 import org.spongepowered.api.config.DefaultConfig;
+import org.spongepowered.configurate.CommentedConfigurationNode;
+import org.spongepowered.configurate.loader.ConfigurationLoader;
 
 import java.io.IOException;
 import java.nio.file.Path;
@@ -43,8 +42,8 @@ public class SpongeConfiguration extends ConfigurateConfiguration {
     public void load() {
         super.load();
 
-        creativeEnable = node.getNode("use-in-creative").getBoolean(false);
-        cheatMode = node.getNode("cheat-mode").getBoolean(false);
+        creativeEnable = node.node("use-in-creative").getBoolean(false);
+        cheatMode = node.node("cheat-mode").getBoolean(false);
 
         try {
             config.save(node);
