@@ -27,9 +27,9 @@ import com.sk89q.worldedit.world.block.BlockState;
 import com.sk89q.worldedit.world.block.BlockType;
 import com.sk89q.worldedit.world.registry.BundledBlockRegistry;
 import org.spongepowered.api.state.StateProperty;
+import org.spongepowered.api.world.schematic.PaletteType;
 import org.spongepowered.api.world.schematic.PaletteTypes;
 
-import java.util.Locale;
 import java.util.Map;
 import java.util.OptionalInt;
 import java.util.TreeMap;
@@ -55,14 +55,10 @@ public class SpongeBlockRegistry extends BundledBlockRegistry {
 
     @Override
     public OptionalInt getInternalBlockStateId(BlockState state) {
-        // TODO Fixup when string parsing exists. This is pretty messy.
-        org.spongepowered.api.block.BlockType spongeType = SpongeAdapter.adapt(state.getBlockType());
-        org.spongepowered.api.block.BlockState workingState = spongeType.getDefaultState();
-        for (Property<?> property : state.getBlockType().getProperties()) {
-            StateProperty spongeProp = spongeType.getStatePropertyByName(property.getName()).get();
-            Object val = spongeProp.parseValue(state.getState(property).toString().toLowerCase(Locale.ROOT)).get();
-            workingState = (org.spongepowered.api.block.BlockState) workingState.withStateProperty(spongeProp, (Comparable) val).get();
-        }
-        return PaletteTypes.GLOBAL_BLOCK_PALETTE.get().create().get(workingState);
+        PaletteType<org.spongepowered.api.block.BlockState> blockPalette = PaletteTypes.GLOBAL_BLOCK_PALETTE.get();
+
+        return blockPalette.getDecoder().apply(state.toString())
+            .map(blockPalette.create()::get)
+            .orElse(OptionalInt.empty());
     }
 }
