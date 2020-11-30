@@ -53,7 +53,7 @@ public abstract class MixinWorldChunk implements Chunk, ExtendedChunk {
     @Redirect(
         method = "setBlockState",
         slice = @Slice(
-            from = @At(value = "INVOKE", target = "Lnet/minecraft/block/entity/BlockEntity;resetBlock()V")
+            from = @At(value = "INVOKE", target = "Lnet/minecraft/block/AbstractBlock$AbstractBlockState;isOf(Lnet/minecraft/block/Block;)Z")
         ),
         at = @At(value = "INVOKE", target = "Lnet/minecraft/block/BlockState;onBlockAdded(Lnet/minecraft/world/World;Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/block/BlockState;Z)V", ordinal = 0)
     )
