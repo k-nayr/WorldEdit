@@ -330,6 +330,7 @@
     "worldedit.error.invalid-number.matches": "Number expected; string \"{0}\" given.",
     "worldedit.error.incomplete-region": "Make a region selection first.",
     "worldedit.error.unknown-block": "Block name '{0}' was not recognized.",
+    "worldedit.error.unknown-item": "Item name '{0}' was not recognized.",
     "worldedit.error.unknown-entity": "Entity name '{0}' was not recognized.",
     "worldedit.error.unknown-mob": "Mob name '{0}' was not recognized.",
     "worldedit.error.unknown-biome": "Biome name '{0}' was not recognized.",

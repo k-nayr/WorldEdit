@@ -19,6 +19,8 @@
 
 package com.sk89q.worldedit.extension.factory.parser;
 
+import com.sk89q.jnbt.AdventureNBTConverter;
+import com.sk89q.jnbt.CompoundTag;
 import com.sk89q.worldedit.WorldEdit;
 import com.sk89q.worldedit.blocks.BaseItem;
 import com.sk89q.worldedit.blocks.BaseItemStack;
@@ -35,7 +37,9 @@ import com.sk89q.worldedit.util.formatting.text.TranslatableComponent;
 import com.sk89q.worldedit.world.item.ItemType;
 import com.sk89q.worldedit.world.item.ItemTypes;
 import com.sk89q.worldedit.world.registry.LegacyMapper;
+import net.kyori.adventure.nbt.TagStringIO;
 
+import java.io.IOException;
 import java.util.Locale;
 import java.util.stream.Stream;
 
@@ -52,44 +56,81 @@ public class DefaultItemParser extends InputParser<BaseItem> {
 
     @Override
     public BaseItem parseFromInput(String input, ParserContext context) throws InputParseException {
+        ItemType itemType;
+        CompoundTag itemNbtData = null;
+
         BaseItem item = null;
+
         // Legacy matcher
         if (context.isTryingLegacy()) {
             try {
                 String[] split = input.split(":");
-                ItemType type;
                 if (split.length == 0) {
                     throw new InputParseException(TranslatableComponent.of("worldedit.error.parser.invalid-colon"));
                 } else if (split.length == 1) {
-                    type = LegacyMapper.getInstance().getItemFromLegacy(Integer.parseInt(split[0]));
+                    itemType = LegacyMapper.getInstance().getItemFromLegacy(Integer.parseInt(split[0]));
                 } else {
-                    type = LegacyMapper.getInstance().getItemFromLegacy(Integer.parseInt(split[0]), Integer.parseInt(split[1]));
+                    itemType = LegacyMapper.getInstance().getItemFromLegacy(Integer.parseInt(split[0]), Integer.parseInt(split[1]));
                 }
-                if (type != null) {
-                    item = new BaseItem(type);
+                if (itemType != null) {
+                    item = new BaseItem(itemType);
                 }
             } catch (NumberFormatException ignored) {
             }
         }
 
-        if ("hand".equalsIgnoreCase(input)) {
-            return getItemInHand(context.requireActor(), HandSide.MAIN_HAND);
-        } else if ("offhand".equalsIgnoreCase(input)) {
-            return getItemInHand(context.requireActor(), HandSide.OFF_HAND);
-        }
-
         if (item == null) {
-            ItemType type = ItemTypes.get(input.toLowerCase(Locale.ROOT));
-            if (type != null) {
-                item = new BaseItem(type);
+            String typeString;
+            String nbtString = null;
+            int nbtStart = input.indexOf('{');
+
+            if (nbtStart == -1) {
+                typeString = input;
+            } else {
+                typeString = input.substring(0, nbtStart);
+                if (nbtStart + 1 >= input.length()) {
+                    throw new InputParseException(TranslatableComponent.of("worldedit.error.parser.hanging-lbracket", TextComponent.of(nbtStart)));
+                }
+                int stateEnd = input.lastIndexOf('}');
+                if (stateEnd < 0) {
+                    throw new InputParseException(TranslatableComponent.of("worldedit.error.parser.missing-rbracket"));
+                }
+                nbtString = input.substring(nbtStart);
             }
+
+            if ("hand".equalsIgnoreCase(typeString)) {
+                BaseItemStack heldItem = getItemInHand(context.requireActor(), HandSide.MAIN_HAND);
+                itemType = heldItem.getType();
+                itemNbtData = heldItem.getNbtData();
+            } else if ("offhand".equalsIgnoreCase(typeString)) {
+                BaseItemStack heldItem = getItemInHand(context.requireActor(), HandSide.OFF_HAND);
+                itemType = heldItem.getType();
+                itemNbtData = heldItem.getNbtData();
+            } else {
+                itemType = ItemTypes.get(typeString.toLowerCase(Locale.ROOT));
+            }
+
+            if (itemType == null) {
+                throw new NoMatchException(TranslatableComponent.of("worldedit.error.unknown-item", TextComponent.of(input)));
+            }
+
+            if (nbtString != null) {
+                try {
+                    CompoundTag otherTag = AdventureNBTConverter.fromAdventure(TagStringIO.get().asCompound(nbtString));
+                    if (itemNbtData == null) {
+                        itemNbtData = otherTag;
+                    } else {
+                        itemNbtData = itemNbtData.createBuilder().putAll(otherTag.getValue()).build();
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            item = new BaseItem(itemType, itemNbtData);
         }
 
-        if (item == null) {
-            throw new NoMatchException(TranslatableComponent.of("worldedit.error.no-match", TextComponent.of(input)));
-        } else {
-            return item;
-        }
+        return item;
     }
 
     private BaseItemStack getItemInHand(Actor actor, HandSide handSide) throws InputParseException {
