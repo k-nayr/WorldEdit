@@ -123,7 +123,11 @@ public class DefaultItemParser extends InputParser<BaseItem> {
                         itemNbtData = itemNbtData.createBuilder().putAll(otherTag.getValue()).build();
                     }
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    throw new NoMatchException(TranslatableComponent.of(
+                        "worldedit.error.invalid-nbt",
+                        TextComponent.of(input),
+                        TextComponent.of(e.getMessage())
+                    ));
                 }
             }
 
