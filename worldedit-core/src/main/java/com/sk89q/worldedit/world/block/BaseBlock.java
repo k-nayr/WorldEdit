@@ -19,12 +19,16 @@
 
 package com.sk89q.worldedit.world.block;
 
+import com.sk89q.jnbt.AdventureNBTConverter;
 import com.sk89q.jnbt.CompoundTag;
 import com.sk89q.jnbt.StringTag;
 import com.sk89q.jnbt.Tag;
+import com.sk89q.worldedit.WorldEdit;
 import com.sk89q.worldedit.blocks.TileEntityBlock;
 import com.sk89q.worldedit.registry.state.Property;
+import net.kyori.adventure.nbt.TagStringIO;
 
+import java.io.IOException;
 import java.util.Map;
 import java.util.Objects;
 import javax.annotation.Nullable;
@@ -189,8 +193,16 @@ public class BaseBlock implements BlockStateHolder<BaseBlock>, TileEntityBlock {
 
     @Override
     public String toString() {
-        // TODO use a json serializer for the NBT data
-        return blockState.getAsString() + (hasNbtData() ? "{hasNbt}" : "");
+        String nbtString = "";
+        if (hasNbtData()) {
+            try {
+                nbtString = TagStringIO.get().asString(AdventureNBTConverter.toAdventure(getNbtData()));
+            } catch (IOException e) {
+                WorldEdit.logger.error("Failed to parse NBT of Block", e);
+            }
+        }
+
+        return blockState.getAsString() + nbtString;
     }
 
 }

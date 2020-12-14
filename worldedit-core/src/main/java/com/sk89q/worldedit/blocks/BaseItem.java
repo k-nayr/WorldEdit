@@ -19,10 +19,14 @@
 
 package com.sk89q.worldedit.blocks;
 
+import com.sk89q.jnbt.AdventureNBTConverter;
 import com.sk89q.jnbt.CompoundTag;
+import com.sk89q.worldedit.WorldEdit;
 import com.sk89q.worldedit.world.NbtValued;
 import com.sk89q.worldedit.world.item.ItemType;
+import net.kyori.adventure.nbt.TagStringIO;
 
+import java.io.IOException;
 import javax.annotation.Nullable;
 
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -93,5 +97,19 @@ public class BaseItem implements NbtValued {
     @Override
     public void setNbtData(@Nullable CompoundTag nbtData) {
         this.nbtData = nbtData;
+    }
+
+    @Override
+    public String toString() {
+        String nbtString = "";
+        if (hasNbtData()) {
+            try {
+                nbtString = TagStringIO.get().asString(AdventureNBTConverter.toAdventure(getNbtData()));
+            } catch (IOException e) {
+                WorldEdit.logger.error("Failed to parse NBT of Item", e);
+            }
+        }
+
+        return getType().getId() + nbtString;
     }
 }
