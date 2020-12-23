@@ -24,7 +24,7 @@ import com.sk89q.jnbt.CompoundTag;
 import com.sk89q.worldedit.WorldEdit;
 import com.sk89q.worldedit.world.NbtValued;
 import com.sk89q.worldedit.world.item.ItemType;
-import net.kyori.adventure.nbt.TagStringIO;
+import com.sk89q.worldedit.util.nbt.TagStringIO;
 
 import java.io.IOException;
 import javax.annotation.Nullable;

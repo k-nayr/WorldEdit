@@ -19,7 +19,9 @@
 
 package com.sk89q.worldedit.entity;
 
+import com.sk89q.jnbt.AdventureNBTConverter;
 import com.sk89q.jnbt.CompoundTag;
+import com.sk89q.worldedit.util.nbt.CompoundBinaryTag;
 import com.sk89q.worldedit.world.NbtValued;
 import com.sk89q.worldedit.world.entity.EntityType;
 
@@ -43,7 +45,21 @@ import static com.google.common.base.Preconditions.checkNotNull;
 public class BaseEntity implements NbtValued {
 
     private final EntityType type;
-    private CompoundTag nbtData;
+    @Nullable
+    private CompoundBinaryTag nbtData;
+
+    /**
+     * Create a new base entity.
+     *
+     * @param type the entity type
+     * @param nbtData NBT data
+     * @deprecated Use {@link BaseEntity#BaseEntity(EntityType, CompoundBinaryTag)}
+     */
+    @Deprecated
+    public BaseEntity(EntityType type, CompoundTag nbtData) {
+        this(type);
+        setNbtData(nbtData);
+    }
 
     /**
      * Create a new base entity.
@@ -51,9 +67,9 @@ public class BaseEntity implements NbtValued {
      * @param type the entity type
      * @param nbtData NBT data
      */
-    public BaseEntity(EntityType type, CompoundTag nbtData) {
+    public BaseEntity(EntityType type, CompoundBinaryTag nbtData) {
         this(type);
-        setNbtData(nbtData);
+        setNbtData(nbtData == null ? null : AdventureNBTConverter.fromAdventure(nbtData));
     }
 
     /**
@@ -84,12 +100,12 @@ public class BaseEntity implements NbtValued {
     @Nullable
     @Override
     public CompoundTag getNbtData() {
-        return nbtData;
+        return nbtData == null ? null : AdventureNBTConverter.fromAdventure(nbtData);
     }
 
     @Override
     public void setNbtData(@Nullable CompoundTag nbtData) {
-        this.nbtData = nbtData;
+        this.nbtData = nbtData == null ? null : AdventureNBTConverter.toAdventure(nbtData);
     }
 
     /**

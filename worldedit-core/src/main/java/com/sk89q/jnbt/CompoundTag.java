@@ -19,14 +19,20 @@
 
 package com.sk89q.jnbt;
 
+import com.sk89q.worldedit.util.nbt.CompoundBinaryTag;
+
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * The {@code TAG_Compound} tag.
+ *
+ * @deprecated Use {@link com.sk89q.worldedit.util.nbt.CompoundBinaryTag}.
  */
+@Deprecated
 public final class CompoundTag extends Tag {
 
     private final Map<String, Tag> value;
@@ -39,6 +45,23 @@ public final class CompoundTag extends Tag {
     public CompoundTag(Map<String, Tag> value) {
         super();
         this.value = Collections.unmodifiableMap(value);
+    }
+
+    CompoundTag(CompoundBinaryTag adventureTag) {
+        Set<String> tags = adventureTag.keySet();
+        Map<String, Tag> map = new HashMap<>();
+        for (String tagName : tags) {
+            map.put(tagName, AdventureNBTConverter.fromAdventure(adventureTag.get(tagName)));
+        }
+        this.value = Collections.unmodifiableMap(map);
+    }
+
+    CompoundBinaryTag toAdventure() {
+        CompoundBinaryTag.Builder builder = CompoundBinaryTag.builder();
+        for (Map.Entry<String, Tag> child : getValue().entrySet()) {
+            builder.put(child.getKey(), AdventureNBTConverter.toAdventure(child.getValue()));
+        }
+        return builder.build();
     }
 
     /**

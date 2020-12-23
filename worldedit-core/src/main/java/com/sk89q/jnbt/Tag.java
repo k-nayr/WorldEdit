@@ -21,7 +21,10 @@ package com.sk89q.jnbt;
 
 /**
  * Represents a NBT tag.
+ *
+ * @deprecated JNBT is being removed for adventure-nbt in WorldEdit 8.
  */
+@Deprecated
 public abstract class Tag {
 
     /**

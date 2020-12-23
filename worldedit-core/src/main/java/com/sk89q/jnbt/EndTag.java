@@ -21,7 +21,10 @@ package com.sk89q.jnbt;
 
 /**
  * The {@code TAG_End} tag.
+ *
+ * @deprecated Use {@link com.sk89q.worldedit.util.nbt.EndBinaryTag}.
  */
+@Deprecated
 public final class EndTag extends Tag {
 
     @Override

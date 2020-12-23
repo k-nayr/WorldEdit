@@ -19,28 +19,25 @@
 
 package com.sk89q.jnbt;
 
-import net.kyori.adventure.nbt.BinaryTag;
-import net.kyori.adventure.nbt.ByteArrayBinaryTag;
-import net.kyori.adventure.nbt.ByteBinaryTag;
-import net.kyori.adventure.nbt.CompoundBinaryTag;
-import net.kyori.adventure.nbt.DoubleBinaryTag;
-import net.kyori.adventure.nbt.EndBinaryTag;
-import net.kyori.adventure.nbt.FloatBinaryTag;
-import net.kyori.adventure.nbt.IntArrayBinaryTag;
-import net.kyori.adventure.nbt.IntBinaryTag;
-import net.kyori.adventure.nbt.ListBinaryTag;
-import net.kyori.adventure.nbt.LongArrayBinaryTag;
-import net.kyori.adventure.nbt.LongBinaryTag;
-import net.kyori.adventure.nbt.ShortBinaryTag;
-import net.kyori.adventure.nbt.StringBinaryTag;
+import com.sk89q.worldedit.util.nbt.BinaryTag;
+import com.sk89q.worldedit.util.nbt.ByteArrayBinaryTag;
+import com.sk89q.worldedit.util.nbt.ByteBinaryTag;
+import com.sk89q.worldedit.util.nbt.CompoundBinaryTag;
+import com.sk89q.worldedit.util.nbt.DoubleBinaryTag;
+import com.sk89q.worldedit.util.nbt.EndBinaryTag;
+import com.sk89q.worldedit.util.nbt.FloatBinaryTag;
+import com.sk89q.worldedit.util.nbt.IntArrayBinaryTag;
+import com.sk89q.worldedit.util.nbt.IntBinaryTag;
+import com.sk89q.worldedit.util.nbt.ListBinaryTag;
+import com.sk89q.worldedit.util.nbt.LongArrayBinaryTag;
+import com.sk89q.worldedit.util.nbt.LongBinaryTag;
+import com.sk89q.worldedit.util.nbt.ShortBinaryTag;
+import com.sk89q.worldedit.util.nbt.StringBinaryTag;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
+/**
+ * @deprecated JNBT is being removed in WE8.
+ */
+@Deprecated
 public class AdventureNBTConverter {
 
     private AdventureNBTConverter() {
@@ -77,91 +74,79 @@ public class AdventureNBTConverter {
         }
     }
 
-    public static IntArrayBinaryTag toAdventure(IntArrayTag tag) {
-        int[] value = tag.getValue();
-        return IntArrayBinaryTag.of(Arrays.copyOf(value, value.length));
+    private static DoubleBinaryTag toAdventure(DoubleTag tag) {
+        return tag.toAdventure();
+    }
+
+    private static ShortBinaryTag toAdventure(ShortTag tag) {
+        return tag.toAdventure();
+    }
+
+    private static FloatBinaryTag toAdventure(FloatTag tag) {
+        return tag.toAdventure();
+    }
+
+    private static ByteArrayBinaryTag toAdventure(ByteArrayTag tag) {
+        return tag.toAdventure();
+    }
+
+    private static ByteBinaryTag toAdventure(ByteTag tag) {
+        return tag.toAdventure();
+    }
+
+    private static IntBinaryTag toAdventure(IntTag tag) {
+        return tag.toAdventure();
+    }
+
+    private static StringBinaryTag toAdventure(StringTag tag) {
+        return tag.toAdventure();
+    }
+
+    private static LongArrayBinaryTag toAdventure(LongArrayTag tag) {
+        return tag.toAdventure();
+    }
+
+    private static LongBinaryTag toAdventure(LongTag tag) {
+        return tag.toAdventure();
+    }
+
+    private static IntArrayBinaryTag toAdventure(IntArrayTag tag) {
+        return tag.toAdventure();
     }
 
     public static ListBinaryTag toAdventure(ListTag tag) {
-        ListBinaryTag.Builder<BinaryTag> builder = ListBinaryTag.builder();
-        for (Tag child : tag.getValue()) {
-            if (child instanceof EndTag) {
-                continue;
-            }
-            builder.add(toAdventure(child));
-        }
-        return builder.build();
-    }
-
-    public static LongBinaryTag toAdventure(LongTag tag) {
-        return LongBinaryTag.of(tag.getValue());
-    }
-
-    public static LongArrayBinaryTag toAdventure(LongArrayTag tag) {
-        return LongArrayBinaryTag.of(tag.getValue().clone());
-    }
-
-    public static StringBinaryTag toAdventure(StringTag tag) {
-        return StringBinaryTag.of(tag.getValue());
-    }
-
-    public static IntBinaryTag toAdventure(IntTag tag) {
-        return IntBinaryTag.of(tag.getValue());
-    }
-
-    public static ByteBinaryTag toAdventure(ByteTag tag) {
-        return ByteBinaryTag.of(tag.getValue());
-    }
-
-    public static ByteArrayBinaryTag toAdventure(ByteArrayTag tag) {
-        return ByteArrayBinaryTag.of(tag.getValue().clone());
+        return tag.toAdventure();
     }
 
     public static CompoundBinaryTag toAdventure(CompoundTag tag) {
-        CompoundBinaryTag.Builder builder = CompoundBinaryTag.builder();
-        for (Map.Entry<String, Tag> child : tag.getValue().entrySet()) {
-            builder.put(child.getKey(), toAdventure(child.getValue()));
-        }
-        return builder.build();
-    }
-
-    public static FloatBinaryTag toAdventure(FloatTag tag) {
-        return FloatBinaryTag.of(tag.getValue());
-    }
-
-    public static ShortBinaryTag toAdventure(ShortTag tag) {
-        return ShortBinaryTag.of(tag.getValue());
-    }
-
-    public static DoubleBinaryTag toAdventure(DoubleTag tag) {
-        return DoubleBinaryTag.of(tag.getValue());
+        return tag.toAdventure();
     }
 
     public static Tag fromAdventure(BinaryTag other) {
         if (other instanceof IntArrayBinaryTag) {
-            return AdventureNBTConverter.fromAdventure((IntArrayBinaryTag) other);
+            return fromAdventure((IntArrayBinaryTag) other);
         } else if (other instanceof ListBinaryTag) {
-            return AdventureNBTConverter.fromAdventure((ListBinaryTag) other);
+            return fromAdventure((ListBinaryTag) other);
         } else if (other instanceof EndBinaryTag) {
-            return AdventureNBTConverter.fromAdventure((EndBinaryTag) other);
+            return fromAdventure();
         } else if (other instanceof LongBinaryTag) {
-            return AdventureNBTConverter.fromAdventure((LongBinaryTag) other);
+            return fromAdventure((LongBinaryTag) other);
         } else if (other instanceof LongArrayBinaryTag) {
-            return AdventureNBTConverter.fromAdventure((LongArrayBinaryTag) other);
+            return fromAdventure((LongArrayBinaryTag) other);
         } else if (other instanceof StringBinaryTag) {
-            return AdventureNBTConverter.fromAdventure((StringBinaryTag) other);
+            return fromAdventure((StringBinaryTag) other);
         } else if (other instanceof IntBinaryTag) {
-            return AdventureNBTConverter.fromAdventure((IntBinaryTag) other);
+            return fromAdventure((IntBinaryTag) other);
         } else if (other instanceof ByteBinaryTag) {
-            return AdventureNBTConverter.fromAdventure((ByteBinaryTag) other);
+            return fromAdventure((ByteBinaryTag) other);
         } else if (other instanceof ByteArrayBinaryTag) {
-            return AdventureNBTConverter.fromAdventure((ByteArrayBinaryTag) other);
+            return fromAdventure((ByteArrayBinaryTag) other);
         } else if (other instanceof CompoundBinaryTag) {
-            return AdventureNBTConverter.fromAdventure((CompoundBinaryTag) other);
+            return fromAdventure((CompoundBinaryTag) other);
         } else if (other instanceof FloatBinaryTag) {
-            return AdventureNBTConverter.fromAdventure((FloatBinaryTag) other);
+            return fromAdventure((FloatBinaryTag) other);
         } else if (other instanceof ShortBinaryTag) {
-            return AdventureNBTConverter.fromAdventure((ShortBinaryTag) other);
+            return fromAdventure((ShortBinaryTag) other);
         } else if (other instanceof DoubleBinaryTag) {
             return fromAdventure((DoubleBinaryTag) other);
         } else {
@@ -169,70 +154,55 @@ public class AdventureNBTConverter {
         }
     }
 
-    public static IntArrayTag fromAdventure(IntArrayBinaryTag other) {
-        int[] value = other.value();
-        return new IntArrayTag(Arrays.copyOf(value, value.length));
-    }
-
-    public static ListTag fromAdventure(ListBinaryTag other) {
-        List<Tag> list = new ArrayList<>();
-        Class<? extends Tag> listClass = StringTag.class;
-        int tags = other.size();
-        for (int i = 0; i < tags; i++) {
-            Tag child = fromAdventure(other.get(0));
-            list.add(child);
-            listClass = child.getClass();
-        }
-        return new ListTag(listClass, list);
-    }
-
-    public static EndTag fromAdventure(EndBinaryTag other) {
-        return new EndTag();
-    }
-
-    public static LongTag fromAdventure(LongBinaryTag other) {
-        return new LongTag(other.value());
-    }
-
-    public static LongArrayTag fromAdventure(LongArrayBinaryTag other) {
-        return new LongArrayTag(other.value().clone());
-    }
-
-    public static StringTag fromAdventure(StringBinaryTag other) {
-        return new StringTag(other.value());
-    }
-
-    public static IntTag fromAdventure(IntBinaryTag other) {
-        return new IntTag(other.value());
-    }
-
-    public static ByteTag fromAdventure(ByteBinaryTag other) {
-        return new ByteTag(other.value());
-    }
-
-    public static ByteArrayTag fromAdventure(ByteArrayBinaryTag other) {
-        return new ByteArrayTag(other.value().clone());
-    }
-
-    public static CompoundTag fromAdventure(CompoundBinaryTag other) {
-        Set<String> tags = other.keySet();
-        Map<String, Tag> map = new HashMap<>();
-        for (String tagName : tags) {
-            map.put(tagName, fromAdventure(other.get(tagName)));
-        }
-        return new CompoundTag(map);
-    }
-
-    public static FloatTag fromAdventure(FloatBinaryTag other) {
-        return new FloatTag(other.value());
+    public static DoubleTag fromAdventure(DoubleBinaryTag other) {
+        return new DoubleTag(other);
     }
 
     public static ShortTag fromAdventure(ShortBinaryTag other) {
-        return new ShortTag(other.value());
+        return new ShortTag(other);
     }
 
-    public static DoubleTag fromAdventure(DoubleBinaryTag other) {
-        return new DoubleTag(other.value());
+    public static FloatTag fromAdventure(FloatBinaryTag other) {
+        return new FloatTag(other);
     }
 
+    public static CompoundTag fromAdventure(CompoundBinaryTag other) {
+        return new CompoundTag(other);
+    }
+
+    public static ByteArrayTag fromAdventure(ByteArrayBinaryTag other) {
+        return new ByteArrayTag(other);
+    }
+
+    public static ByteTag fromAdventure(ByteBinaryTag other) {
+        return new ByteTag(other);
+    }
+
+    public static IntTag fromAdventure(IntBinaryTag other) {
+        return new IntTag(other);
+    }
+
+    public static StringTag fromAdventure(StringBinaryTag other) {
+        return new StringTag(other);
+    }
+
+    public static LongArrayTag fromAdventure(LongArrayBinaryTag other) {
+        return new LongArrayTag(other);
+    }
+
+    public static LongTag fromAdventure(LongBinaryTag other) {
+        return new LongTag(other);
+    }
+
+    public static EndTag fromAdventure() {
+        return new EndTag();
+    }
+
+    public static ListTag fromAdventure(ListBinaryTag other) {
+        return new ListTag(other);
+    }
+
+    public static IntArrayTag fromAdventure(IntArrayBinaryTag other) {
+        return new IntArrayTag(other);
+    }
 }
