@@ -93,6 +93,7 @@ public class EllipsoidRegionSelector implements RegionSelector, CUIRegion {
             BlockVector3 center = pos1.add(pos2).divide(2).floor();
             region.setCenter(center);
             region.setRadius(pos2.subtract(center).toVector3());
+            started = true;
         }
     }
 
